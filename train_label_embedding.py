@@ -31,12 +31,12 @@ from plotly.offline import plot
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 
 # TODO: fill here your plotly details before running.
-plotly.tools.set_credentials_file(username='', api_key='')
+# plotly.tools.set_credentials_file(username='', api_key='')
 
 from config import get_dicts
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--tree", type=str, help='go_emotion | ED | ED_easy_4 | ED_hard_a | ED_hard_b | ED_hard_c | ED_hard_d ', default='ED')
+parser.add_argument("--tree", type=str, help='go_emotion | ED | ED_easy_4 | ED_hard_a | ED_hard_b | ED_hard_c | ED_hard_d | subtask1', default='ED')
 parser.add_argument("--model", type=str, help='poincare | hyp_cones ', default='poincare')
 parser.add_argument("--dim", type=int, default=100)
 args = parser.parse_args()
@@ -111,6 +111,11 @@ elif args.tree == 'ED_hard_c':
 
 elif args.tree == 'ED_hard_d':
     data_directory = os.path.join((os.path.abspath('')), 'data', 'ED_hard_d')
+    data_file_path = os.path.join(data_directory, 'label_tree.tsv')
+    root_label = 'root'
+
+elif args.tree == 'subtask1':
+    data_directory = os.path.join((os.path.abspath('')), 'data', 'subtask1')
     data_file_path = os.path.join(data_directory, 'label_tree.tsv')
     root_label = 'root'
     
@@ -298,7 +303,7 @@ for k in label2idx.keys():
 if 'sad' in word2vec:
     # little buggy in ED dataset
     word2vec['sad'].astype(float)
-pickle.dump(word2vec, open(os.path.join((os.path.abspath('..'), "label_tree", args.tree + ".bin") , 'wb')))
+pickle.dump(word2vec, open(os.path.join((os.path.abspath('')), 'label_tree', 'subtask1.bin'), 'wb'))
 
 # ### If one wants to save and reload a model later:
 #     pickle.dump(model.kv, open(args.root_path + "model_" + str(dim) + "D.bin", 'wb'))

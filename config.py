@@ -3,7 +3,7 @@ import pickle
 import argparse
 from utils.train_utils import add_flags_from_config
 
-all_dataset_list = ['go_emotion', 'ED', 'ED_easy_4', 'ED_hard_a', 'ED_hard_b', 'ED_hard_c', 'ED_hard_d']
+all_dataset_list = ['go_emotion', 'ED', 'ED_easy_4', 'ED_hard_a', 'ED_hard_b', 'ED_hard_c', 'ED_hard_d', 'subtask1']
 ENCODER_TYPE = 'roberta-base'
 temperature = 0.3
 
@@ -71,8 +71,33 @@ def get_dicts(dataset, return_emb_dicts=False):
     
     elif dataset == 'ED_hard_d':
         label2idx = {'anticipating': 0, 'excited': 1, 'hopeful': 2, 'guilty': 3}
+    elif dataset == 'subtask1':
+        label2idx =  {'Presenting Irrelevant Data (Red Herring)': 0, 'Bandwagon': 1,'Smears': 2,'Glittering generalities (Virtue)': 3,
+                        'Causal  Oversimplification': 4,
+                        'Whataboutism': 5,
+                        'Loaded Language': 6,
+                        'Exaggeration/Minimisation': 7,
+                        'Repetition': 8,
+                        'Thought-terminating cliché': 9,
+                        'Name calling/Labeling': 10,
+                        'Appeal to authority': 11,
+                        'Black-and-white Fallacy/Dictatorship': 12,
+                        'Obfuscation, Intentional vagueness, Confusion': 13,
+                        'Reductio ad hitlerum': 14,
+                        'Appeal to fear/prejudice': 15,
+                        "Misrepresentation of Someone's Position (Straw Man)": 16,
+                        'Flag-waving': 17,
+                        'Slogans': 18,
+                        'Doubt': 19,
+                        'Bandwagon_1': 20,
+                        'Whataboutism_1': 21,
+                        'Appeal to fear/prejudice_1': 22,
+                        'Flag-waving_1': 23,
+                        'Appeal to authority_1': 24,             
+                    }
 
     idx2label = {v: k for k, v in label2idx.items()}
+    
     
     if return_emb_dicts:
         word2vec = pickle.load(open(os.path.join((os.path.abspath('')), 'label_tree', f'{dataset}.bin'), 'rb'))
@@ -82,7 +107,7 @@ def get_dicts(dataset, return_emb_dicts=False):
     return label2idx, idx2label
     
 d, _ = config_args['data_config']['dataset']
-label_dicts, emb_dicts = get_dicts(d, return_emb_dicts=True)
+label_dicts, emb_dicts = get_dicts(d, return_emb_dicts=False)
 parser = argparse.ArgumentParser()
 for _, config_dict in config_args.items():
     parser = add_flags_from_config(parser, config_dict)
